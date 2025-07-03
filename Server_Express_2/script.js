@@ -16,10 +16,7 @@
     Understanding API:
                       API (Application Programming Interface) allows communication between client and server by exposing 
                       endpoints for sending and receiving data.
-
-     Understanding REST API:
-                            REST (Representational State Transfer) API follows specific principles using HTTP methods like GET, POST,
-                            PUT, DELETE for performing CRUD operations on server resources.                             
+                           
 */
 
 
