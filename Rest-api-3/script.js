@@ -13,22 +13,38 @@ app.use(express.json());
 
 const note = [];
 
-app.get('/about', (req, res) => {
-  res.send("hellofromabout");
-})
-
-app.get('/home', (req,res) => {
-  res.send("welcome from sheryians");
-})
-
-app.post('/note', (req, res) => {
+app.post('/notes', (req, res) => {
   note.push(req.body)
   res.json({
-    message: "Not created successfully",
+    message: "Notes created successfully",
     note: note
   })
 })
 
+app.get('/notes', (req,res) => {
+  res.json(note);
+})
+
+app.patch('/notes/:index', (req, res) => {
+  const index = req.params.index;
+  const { title } = req.body;
+
+
+  note[index].title = title
+  res.json({
+    message: "Title updates succesfully"
+  })
+
+})
+
+app.delete('/notes/:index', (req, res) => {
+  const index = req.params.index;
+
+  delete note[index];
+  res.json({
+    message: "note deleted succesfully"
+  })
+})
 app.listen(3000, () => {
   console.log("server running n port");
 })
