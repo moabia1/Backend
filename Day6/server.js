@@ -20,10 +20,10 @@ app.get('/notes', async (req, res) => {
   res.json(notes)
 })
 
-app.delete('/notes', async (req, res) => {
+app.delete('/notes/:id', async (req, res) => {
   const noteId = req.params.id;
 
-  noteModel.findOneAndDelete({
+  await noteModel.findOneAndDelete({
     _id : noteId
   })
 
@@ -32,9 +32,18 @@ app.delete('/notes', async (req, res) => {
   })
 })
 
-app.patch('/notes', async (req, res) => {
+app.patch('/notes/:id', async (req, res) => {
   const noteId = req.params.id;
-  
+  const { title } = req.body;
+  await noteModel.findOneAndUpdate({
+    _id:noteId
+  },{
+    title:title
+  })
+
+  res.json({
+    message: "note Updated"
+  })
 })
 
 connectToDb();
