@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model')
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+
 const registerController = async (req, res) => {
   const { username, password } = req.body;
   const userExist = await userModel.findOne({

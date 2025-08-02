@@ -4,7 +4,10 @@ const postModel = require('../models/post.model');
 const createPostController = async (req, res) => {
   const file = req.file;
   
-  const post = postModel.create({
-    file
-  })
+  console.log(file)
+  
+}
+
+module.exports = {
+  createPostController
 }
