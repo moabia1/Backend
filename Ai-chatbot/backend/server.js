@@ -5,7 +5,10 @@ const { Server } = require("socket.io");
 const generateResponse = require('./src/services/ai.service');
 
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+
+const io = new Server(httpServer, {
+  cors:"http://localhost:5173"
+});
 
 io.on("connection", (socket) => {
   console.log("A user connected")
@@ -15,7 +18,7 @@ io.on("connection", (socket) => {
   })
   socket.on("ai-message", async (data) => {
     const response = await generateResponse(data.prompt);
-    // socket.emit("ai-message-response",response)
+    socket.emit("ai-message-response",response)
   })
 })
 
