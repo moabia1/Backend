@@ -1,17 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import "./App.css";
 
 const Chat = () => {
   const [input, setInput] = useState("");
+  const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState([]);
 
   const handleSend = () => {
     if (!input.trim()) return;
     const userMessage = { sender: "user", text: input };
 
-    setMessages((prev) => [...prev, userMessage])
+    setMessages((prev) => [...prev, userMessage]);
+    socket.emit("ai-message", input);
     setInput("");
   };
+
+  useEffect(() => {
+    const socketInstance = io("http://localhost:3000");
+    setSocket(socketInstance)
+
+    socketInstance.on("ai-message-response", (response) => {
+      const botReply = { sender: "bot", text: response };
+      setMessages((prev) => [...prev, botReply])
+    });
+  },[])
 
   return (
     <div className="chat-container">
