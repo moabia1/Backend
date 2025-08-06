@@ -12,6 +12,9 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("A user disconnect")
   })
+  socket.on("ai-message", async (data) => {
+    console.log("ai-message working")
+  })
 })
 
 
