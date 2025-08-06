@@ -1,7 +1,8 @@
-const { Socket } = require("dgram");
+require('dotenv').config();
 const app = require("./src/App")
 const { createServer } = require("http");
-const { Server } = require("socket.io")
+const { Server } = require("socket.io");
+const generateResponse = require('./src/services/ai.service');
 
 const httpServer = createServer(app);
 const io = new Server(httpServer);
@@ -13,7 +14,8 @@ io.on("connection", (socket) => {
     console.log("A user disconnect")
   })
   socket.on("ai-message", async (data) => {
-    console.log("ai-message working")
+    const response = await generateResponse(data.prompt);
+    socket.emit("ai-message-response",response)
   })
 })
 
