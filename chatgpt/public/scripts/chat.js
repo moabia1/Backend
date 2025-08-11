@@ -7,10 +7,10 @@
   const list = document.querySelector("#messages");
 
   // Sidebar
-  const sidebar = document.querySelector("#sidebar");
-  const sidebarOpen = document.querySelector("#sidebar-open");
-  const sidebarClose = document.querySelector("#sidebar-close");
-  const sidebarBackdrop = document.querySelector("#sidebar-backdrop");
+  // const sidebar = document.querySelector("#sidebar");
+  // const sidebarOpen = document.querySelector("#sidebar-open");
+  // const sidebarClose = document.querySelector("#sidebar-close");
+  // const sidebarBackdrop = document.querySelector("#sidebar-backdrop");
 
   if (sidebar && sidebarOpen && sidebarClose && sidebarBackdrop) {
     const setSidebar = (open) => {
