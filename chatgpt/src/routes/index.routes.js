@@ -1,9 +1,10 @@
 const express = require("express");
-const { model } = require("mongoose");
+const authUser = require("../middlewares/auth.middleware");
+
 
 const router = express.Router()
 
-router.get("/", (req,res) => {
+router.get("/",authUser, (req,res) => {
   res.render("home")
 })
 
