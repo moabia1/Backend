@@ -34,9 +34,7 @@ async function postRegisterController(req,res) {
 
   res.cookie("token", token);
 
-  res.status(201).json({
-    message: "Registerd Succesfully",
-  })
+  res.redirect("/");
 }
 
 async function getLoginController(req, res) {
@@ -68,9 +66,7 @@ console.log(user.password)
 
   res.cookie("token", token)
   
-  res.status(201).json({
-    message:"User Login Successfuly"
-  })
+  res.redirect("/");
 }
 
 

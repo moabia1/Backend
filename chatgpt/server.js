@@ -2,6 +2,7 @@ require("dotenv").config();
 const connecToDb = require("./src/db/db")
 
 const app = require("./src/App");
+
 connecToDb();
 
 
