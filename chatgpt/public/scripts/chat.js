@@ -5,8 +5,7 @@
   const form = document.querySelector("#composer-form");
   const textarea = document.querySelector("#composer-input");
   const list = document.querySelector("#messages");
-
-  Sidebar
+  
   const sidebar = document.querySelector("#sidebar");
   // const sidebarOpen = document.querySelector("#sidebar-open");
   const sidebarClose = document.querySelector("#sidebar-close");
