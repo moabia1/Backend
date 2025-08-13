@@ -5,9 +5,9 @@
   const form = document.querySelector("#composer-form");
   const textarea = document.querySelector("#composer-input");
   const list = document.querySelector("#messages");
-  
+
   const sidebar = document.querySelector("#sidebar");
-  // const sidebarOpen = document.querySelector("#sidebar-open");
+  const sidebarOpen = document.querySelector("#sidebar-open");
   const sidebarClose = document.querySelector("#sidebar-close");
   const sidebarBackdrop = document.querySelector("#sidebar-backdrop");
 
@@ -67,11 +67,6 @@
     if (container) container.scrollTop = container.scrollHeight;
   };
 
-  // Demo responder — replace with real API call later
-  const fakeReply = async (text) => {
-    await new Promise((r) => setTimeout(r, 650));
-    return `You said: ${text}`;
-  };
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -85,18 +80,10 @@
     autoresize();
     scrollToBottom();
 
-    // Show typing indicator
-    const typing = createTyping();
-    list.appendChild(typing);
-    scrollToBottom();
-
     try {
       // Simulate/perform request
-      const reply = await fakeReply(text);
+      socket.emit("ai-message", text);
 
-      // Replace typing with assistant message
-      typing.replaceWith(createMessage({ role: "assistant", content: reply }));
-      scrollToBottom();
     } catch (err) {
       typing.remove();
       console.error(err);
@@ -108,4 +95,11 @@
       scrollToBottom();
     }
   });
+  socket.on("ai-message-response", (message) => {
+    const messageItem = createMessage({
+      role: "assistant",
+      content: message
+    })
+    list.appendChild(messageItem)
+  })
 })();
