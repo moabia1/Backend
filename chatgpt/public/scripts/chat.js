@@ -52,15 +52,6 @@
     return li;
   };
 
-  const createTyping = () => {
-    const li = document.createElement("li");
-    li.className = "message";
-    li.innerHTML = `
-      <div class="avatar">G</div>
-      <div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>
-    `;
-    return li;
-  };
 
   const scrollToBottom = () => {
     const container = document.querySelector(".messages");
