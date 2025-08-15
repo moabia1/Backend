@@ -39,7 +39,7 @@ const loginController = async (req, res) => {
     username:username
   })
   if (!isUserExists) {
-    res.status(409).json({
+    res.status(401).json({
       message:"User not Exist"
     })
   }
