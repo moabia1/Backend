@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/user.model");
 
 async function authUser(req, res, next) {
-  const token = req.cookies;
+  const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({
       message:"Please login first"
