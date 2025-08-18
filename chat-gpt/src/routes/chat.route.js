@@ -1,13 +1,10 @@
 const express = require("express");
 const authUser = require("../middlewares/auth.middleware");
+const chatController = require("../controllers/chat.controller");
 
 const router = express.Router();
 
-router.get("/", authUser,(req, res) => {
-  res.status(201).json({
-    message: "Route Access Succesfull"
-  })
-})
+router.post("/", authUser, chatController)
 
 
 module.exports = router;
