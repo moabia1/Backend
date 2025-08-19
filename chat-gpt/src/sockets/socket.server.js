@@ -34,8 +34,16 @@ function initSocketServer(httpServer) {
         content: messagePayload.content,
         role: "user",
       });
-      
+
       const response = await generateResponse(messagePayload.content)
+
+      await messageModel.create({
+        chat: messagePayload.chat,
+        user: socket.user._id,
+        content: response,
+        role: "model",
+      });
+
       socket.emit("ai-response", {
         content: response,
         chat: messagePayload.chat
