@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const userModel = require("../models/user.model")
 const generateResponse = require("../services/ai.service")
 const messageModel = require("../models/message.model");
+const { text } = require("express");
   
 function initSocketServer(httpServer) {
   const io = new Server(httpServer, {});
@@ -35,7 +36,18 @@ function initSocketServer(httpServer) {
         role: "user",
       });
 
-      const response = await generateResponse(messagePayload.content)
+      const chatHistory = (await messageModel.find({
+        chat: messagePayload.chat
+      }).sort({ createdAt: -1 }).limit(20).lean()).reverse();
+      
+      const response = await generateResponse(
+        chatHistory.map((item) => {
+          return {
+            role: item.role,
+            parts: [{ text: item.content }],
+          };
+        })
+      );
 
       await messageModel.create({
         chat: messagePayload.chat,
