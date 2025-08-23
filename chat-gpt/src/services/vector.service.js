@@ -10,7 +10,7 @@ const chatGptIndex = pc.index("chat-gpt");
 async function createMemory({vectors, metadata,messageId}) {
   await chatGptIndex.upsert([{
     id: messageId,
-    values: vectors,
+    values: vectors,  
     metadata
   }])
 }
@@ -22,7 +22,7 @@ async function queryMemory({ queryVector, limit = 5, metadata }) {
     filter: metadata ? { metadata } : undefined,
     includeMetadata:true
   })
-
+  
   return data.matches
 }
 

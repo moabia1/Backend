@@ -2,9 +2,11 @@ const { Server } = require("socket.io");
 const cookie = require("cookie")
 const jwt = require("jsonwebtoken")
 const userModel = require("../models/user.model")
-const generateResponse = require("../services/ai.service")
+const {generateResponse,generateVectors} = require("../services/ai.service")
 const messageModel = require("../models/message.model");
 const {createMemory,queryMemory} = require("../services/vector.service");
+const { text } = require("express");
+const { chat } = require("@pinecone-database/pinecone/dist/assistant/data/chat");
   
 function initSocketServer(httpServer) {
   const io = new Server(httpServer, {});
@@ -29,12 +31,26 @@ function initSocketServer(httpServer) {
   io.on("connection", (socket) => {
     socket.on("ai-message", async (messagePayload) => {
 
-      // await messageModel.create({
-      //   chat: messagePayload.chat,
-      //   user: socket.user._id,
-      //   content: messagePayload.content,
-      //   role: "user",
-      // });
+      const message = await messageModel.create({
+        chat: messagePayload.chat,
+        user: socket.user._id,
+        content: messagePayload.content,
+        role: "user",
+      });
+
+      const vectors = await generateVectors(messagePayload.content);
+
+      await createMemory({
+        vectors,
+        messageId: message._id,
+        metadata: {
+          chat: messagePayload.chat,
+          user: socket.user._id,
+          text:messagePayload.content
+
+        }
+      })
+      console.log(vectors)  
 
       const chatHistory = (await messageModel.find({
         chat: messagePayload.chat
@@ -49,12 +65,25 @@ function initSocketServer(httpServer) {
         })
       );
 
-      // await messageModel.create({
-      //   chat: messagePayload.chat,
-      //   user: socket.user._id,
-      //   content: response,
-      //   role: "model",
-      // });
+      const responseVecotrs = await generateVectors(response)
+
+      const responseMessage = await messageModel.create({
+        chat: messagePayload.chat,
+        user: socket.user._id,
+        content: response,
+        role: "model",
+      });
+
+
+      await createMemory({
+        vectors: responseVecotrs,
+        messageId: responseMessage._id,
+        metadata: {
+          chat: messagePayload.chat,
+          user: socket.user._id,
+          text:response
+        }
+      })
 
       socket.emit("ai-response", {
         content: response,
