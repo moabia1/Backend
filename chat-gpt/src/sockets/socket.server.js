@@ -40,6 +40,14 @@ function initSocketServer(httpServer) {
 
       const vectors = await generateVectors(messagePayload.content);
 
+      const memory = await queryMemory({
+        queryVector: vectors,
+        limit: 3,
+        metadata:{}
+      })
+
+      console.log(memory);
+
       await createMemory({
         vectors,
         messageId: message._id,
@@ -50,7 +58,7 @@ function initSocketServer(httpServer) {
 
         }
       })
-      console.log(vectors)  
+  
 
       const chatHistory = (await messageModel.find({
         chat: messagePayload.chat
