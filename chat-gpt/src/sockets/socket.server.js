@@ -43,10 +43,12 @@ function initSocketServer(httpServer) {
       const memory = await queryMemory({
         queryVector: vectors,
         limit: 3,
-        metadata:{}
+        metadata: {
+          user: socket.user._id
+        }
       })
 
-      console.log(memory);
+      // console.log(memory);
 
       await createMemory({
         vectors,
@@ -64,14 +66,27 @@ function initSocketServer(httpServer) {
         chat: messagePayload.chat
       }).sort({ createdAt: -1 }).limit(20).lean()).reverse();
       
-      const response = await generateResponse(
-        chatHistory.map((item) => {
-          return {
-            role: item.role,
-            parts: [{ text: item.content }],
-          };
-        })
-      );
+      const stm = chatHistory.map((item) => {
+        return {
+          role: item.role,
+          parts: [{ text: item.content }],
+        };
+      });
+
+      const ltm = [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `these are some previous message  from the chat use them to generate response
+              ${memory.map(item=> item.metadata.text).join("/n")}`
+            }
+          ]
+        }
+      ]
+      console.log(ltm[0])
+      console.log(stm)
+      const response = await generateResponse([...ltm,...stm]);
 
       const responseVecotrs = await generateVectors(response)
 
