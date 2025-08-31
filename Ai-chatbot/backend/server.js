@@ -3,7 +3,6 @@ const app = require("./src/App")
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const generateResponse = require('./src/services/ai.service');
-const { text } = require('stream/consumers');
 
 const httpServer = createServer(app);
 
