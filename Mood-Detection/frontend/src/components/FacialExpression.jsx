@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import axios from "axios";
 
-
 export default function FacialExpression({ setsong }) {
   const videoRef = useRef();
 
@@ -28,10 +27,10 @@ export default function FacialExpression({ setsong }) {
       .withFaceExpressions();
     let mostProbableExpression = 0;
     let _expression = "";
-    console.log(detections[0])
+    console.log(detections[0]);
 
     if (!detections || detections.length === 0) {
-      console.log("No face Detected!!")
+      console.log("No face Detected!!");
       return;
     }
 
@@ -43,7 +42,7 @@ export default function FacialExpression({ setsong }) {
     }
 
     axios
-      .get(`http://localhost:3000/songs?mood=${_expression}`)
+      .get(`https://moody-i9n3.onrender.com/songs?mood=${_expression}`)
       .then((resolve) => {
         console.log(resolve.data);
         setsong(resolve.data.song);
